@@ -1,0 +1,24 @@
+name: build-and-test
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+      - run: cmake --build build --config Release
+      - run: ctest --test-dir build -C Release --output-on-failure
+      - run: cmake --install build --config Release --prefix "${{ runner.temp }}/ael-install"
+      - run: cmake -S tests/install_consumer -B consumer-build -DCMAKE_PREFIX_PATH="${{ runner.temp }}/ael-install"
+      - run: cmake --build consumer-build --config Release
+      - if: runner.os == 'Linux'
+        run: ./consumer-build/ael-package-consumer
+      - if: runner.os == 'Windows'
+        run: .\consumer-build\Release\ael-package-consumer.exe

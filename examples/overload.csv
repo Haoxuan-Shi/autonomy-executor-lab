@@ -1,0 +1,10 @@
+stream,sequence,release_ms,execution_ms,deadline_ms,source_ms,max_age_ms,priority
+localization,0,0,6,20,0,25,1
+camera,0,0,12,25,0,30,4
+control,0,2,3,10,2,12,0
+camera,1,8,12,25,8,30,4
+control,1,12,3,10,12,12,0
+localization,1,15,6,20,15,25,1
+camera,2,16,12,25,16,30,4
+control,2,22,3,10,22,12,0
+
